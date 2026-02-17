@@ -82,7 +82,10 @@ export default function CheckoutPage() {
         Back to POS
       </Button>
 
-      <h1 className="mb-6 text-3xl font-bold">Checkout</h1>
+      <div className="mb-6 flex items-center justify-between">
+        <h1 className="text-3xl font-bold">Checkout</h1>
+        <AnimatedThemeToggler />
+      </div>
 
       <div className="grid gap-8 md:grid-cols-2">
         <div>

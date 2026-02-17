@@ -22,7 +22,7 @@ export default function POSPage() {
       <main className="flex-1 flex flex-col h-screen overflow-hidden">
         <div className="sticky top-0 z-10 bg-background p-4 border-b">
           <div className="flex items-center justify-between">
-            <h1 className="text-2xl font-bold">Point of Sale</h1>
+            <h1 className="text-2xl font-bold">OrderXpress</h1>
             <div className="flex items-center gap-4">
               <Button variant="outline" onClick={() => router.push("/admin")}>
                 <Settings className="h-4 w-4 mr-2" />

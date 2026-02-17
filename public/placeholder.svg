@@ -1,0 +1,12 @@
+<svg width="400" height="400" xmlns="http://www.w3.org/2000/svg">
+  <rect width="400" height="400" fill="#f3f4f6"/>
+  <text x="200" y="180" font-family="Arial, sans-serif" font-size="24" fill="#9ca3af" text-anchor="middle">
+    No Image
+  </text>
+  <text x="200" y="220" font-family="Arial, sans-serif" font-size="16" fill="#d1d5db" text-anchor="middle">
+    Product image placeholder
+  </text>
+  <rect x="150" y="150" width="100" height="100" fill="none" stroke="#d1d5db" stroke-width="2" rx="8"/>
+  <circle cx="175" cy="175" r="8" fill="#d1d5db"/>
+  <path d="M 160 210 L 180 185 L 200 200 L 220 175 L 240 210 Z" fill="#e5e7eb" stroke="#d1d5db" stroke-width="2"/>
+</svg>
