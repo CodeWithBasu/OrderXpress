@@ -10,6 +10,7 @@ import { useRouter } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { MenuQRCodeModal } from "./components/menu-qr-modal"
 import { FeedbackModal } from "./components/feedback-modal"
+import { AnimatedThemeToggler } from "@/components/ui/animated-theme-toggler"
 
 export default function POSPage() {
   const [searchQuery, setSearchQuery] = useState("")
@@ -26,6 +27,7 @@ export default function POSPage() {
           <div className="flex items-center justify-between">
             <h1 className="text-2xl font-bold bg-clip-text text-transparent bg-linear-to-r from-indigo-600 to-cyan-600 dark:from-indigo-400 dark:to-cyan-400">OrderXpress</h1>
             <div className="flex items-center gap-4">
+              <AnimatedThemeToggler />
               <FeedbackModal source="POS System" />
               <MenuQRCodeModal />
               <Button variant="outline" onClick={() => router.push("/admin")}>

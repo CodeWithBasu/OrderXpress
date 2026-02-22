@@ -11,6 +11,7 @@ import type { InventoryItem } from "../services/database"
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area"
 import { DietaryIcon, getDietaryType } from "@/components/ui/dietary-icon"
 import { FeedbackModal } from "../components/feedback-modal"
+import { AnimatedThemeToggler } from "@/components/ui/animated-theme-toggler"
 
 export default function DigitalMenuPage() {
   const [products, setProducts] = useState<InventoryItem[]>([])
@@ -38,6 +39,9 @@ export default function DigitalMenuPage() {
       {/* Header */}
       <div className="sticky top-0 z-20 bg-white/80 dark:bg-slate-950/80 backdrop-blur-xl border-b border-slate-200/60 dark:border-slate-800/60 pt-6 pb-4 px-4 shadow-sm">
         <div className="text-center mb-6 relative">
+          <div className="absolute left-0 top-0">
+            <AnimatedThemeToggler />
+          </div>
           <div className="absolute right-0 top-0">
             <FeedbackModal source="Digital Menu" />
           </div>
