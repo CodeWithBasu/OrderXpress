@@ -7,6 +7,13 @@
   <p><b>A Modern, Lightning-Fast Full Stack Point of Sale & Inventory Management System</b></p>
 
   <p>
+    <a href="https://order-xpress.vercel.app" target="_blank">
+      <img alt="Website" src="https://img.shields.io/badge/Website-order--xpress.vercel.app-orange?style=flat&logo=vercel" />
+    </a>
+    <a href="https://basudev.vercel.app" target="_blank">
+      <img alt="Portfolio" src="https://img.shields.io/badge/Portfolio-basudev.vercel.app-purple?style=flat&logo=vercel" />
+    </a>
+    <br />
     <img alt="Version" src="https://img.shields.io/badge/version-1.0.0-blue.svg?cacheSeconds=2592000" />
     <img alt="Next.js" src="https://img.shields.io/badge/Next.js-15-black?logo=next.js" />
     <img alt="React" src="https://img.shields.io/badge/React-19-blue?logo=react" />
