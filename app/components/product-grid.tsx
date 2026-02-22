@@ -8,6 +8,7 @@ import { Card, CardContent } from "@/components/ui/card"
 import { useCart } from "../context/cart-context"
 import { db } from "../services/database"
 import type { InventoryItem } from "../services/database"
+import { DietaryIcon, getDietaryType } from "@/components/ui/dietary-icon"
 
 interface ProductGridProps {
   category: string
@@ -48,8 +49,13 @@ export default function ProductGrid({ category, searchQuery }: ProductGridProps)
           </div>
           <CardContent className="p-4 pt-2">
             <div>
-              <h3 className="font-semibold text-slate-800 dark:text-slate-200 line-clamp-1 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">{product.name}</h3>
-              <p className="text-sm font-medium text-slate-500 dark:text-slate-400 mt-1">₹{product.price.toFixed(2)}</p>
+              <div className="flex items-center gap-2 mb-1">
+                <DietaryIcon type={getDietaryType(product.name)} />
+                <h3 className="font-semibold text-slate-800 dark:text-slate-200 line-clamp-1 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">
+                  {product.name}
+                </h3>
+              </div>
+              <p className="text-sm font-medium text-slate-500 dark:text-slate-400">₹{product.price.toFixed(2)}</p>
             </div>
           </CardContent>
         </Card>

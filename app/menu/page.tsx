@@ -9,6 +9,7 @@ import { Card, CardContent } from "@/components/ui/card"
 import { db } from "../services/database"
 import type { InventoryItem } from "../services/database"
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area"
+import { DietaryIcon, getDietaryType } from "@/components/ui/dietary-icon"
 
 export default function DigitalMenuPage() {
   const [products, setProducts] = useState<InventoryItem[]>([])
@@ -85,9 +86,12 @@ export default function DigitalMenuPage() {
                   </div>
                 </div>
                 <CardContent className="flex-1 p-4 flex flex-col justify-center sm:justify-start">
-                  <div className="flex justify-between items-start mb-1">
-                    <h3 className="font-bold text-slate-800 dark:text-slate-100 line-clamp-2 pr-2">{product.name}</h3>
-                    <span className="font-extrabold text-orange-600 dark:text-orange-400">₹{product.price.toFixed(2)}</span>
+                  <div className="flex justify-between items-start mb-1 gap-2">
+                    <div className="flex items-start gap-2">
+                      <DietaryIcon type={getDietaryType(product.name)} className="mt-1" />
+                      <h3 className="font-bold text-slate-800 dark:text-slate-100 line-clamp-2">{product.name}</h3>
+                    </div>
+                    <span className="font-extrabold text-orange-600 dark:text-orange-400 shrink-0">₹{product.price.toFixed(2)}</span>
                   </div>
                   <p className="text-xs text-muted-foreground line-clamp-2 mt-1">Delicious {product.category} item prepared fresh upon your order.</p>
                 </CardContent>
