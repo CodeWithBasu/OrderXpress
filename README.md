@@ -2,7 +2,7 @@
 
 **OrderXpress** is a modern, high-performance Point of Sale (POS) and inventory management system built specifically for fast-paced restaurants, cafes, and retail stores. It features a beautiful, dynamic user interface with lightning-fast checkout flows.
 
-![OrderXpress POS Preview](/public/preview.png) _(Preview placeholder)_
+![OrderXpress POS Preview](public/preview.png) _(Preview placeholder)_
 
 ## ✨ Key Features
 
@@ -27,7 +27,7 @@
 
 Here is a visual breakdown of the `package.json` structure, illustrating our scripts, runtime dependencies, and devDependencies:
 
-![Package.json Dependency Tree](/public/OrderXpress.json.png)
+![Package.json Dependency Tree](public/OrderXpress.json.png)
 
 ## 🚀 Getting Started
 
