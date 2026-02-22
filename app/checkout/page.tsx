@@ -134,9 +134,9 @@ export default function CheckoutPage() {
 
   if (cart.length === 0) {
     return (
-      <div className="flex h-screen items-center justify-center">
+      <div className="flex min-h-screen items-center justify-center bg-slate-50 dark:bg-slate-950">
         <div className="text-center">
-          <h1 className="text-2xl font-bold">Your cart is empty</h1>
+          <h1 className="text-2xl font-bold text-slate-900 dark:text-slate-100">Your cart is empty</h1>
           <p className="mt-2 text-muted-foreground">Add some items to your cart before checkout</p>
           <Button className="mt-4" onClick={() => router.push("/")}>
             Return to POS
@@ -147,11 +147,12 @@ export default function CheckoutPage() {
   }
 
   return (
-    <div className="container mx-auto max-w-4xl py-8">
-      <Button variant="ghost" className="mb-6" onClick={() => router.push("/")}>
-        <ArrowLeft className="mr-2 h-4 w-4" />
-        Back to POS
-      </Button>
+    <div className="min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 pb-12">
+      <div className="container mx-auto max-w-4xl py-8">
+        <Button variant="ghost" className="mb-6 hover:bg-slate-200 dark:hover:bg-slate-800" onClick={() => router.push("/")}>
+          <ArrowLeft className="mr-2 h-4 w-4" />
+          Back to POS
+        </Button>
 
       <div className="mb-6 flex items-center justify-between">
         <h1 className="text-3xl font-bold">Checkout</h1>
@@ -161,7 +162,7 @@ export default function CheckoutPage() {
       <div className="grid gap-8 md:grid-cols-2">
         <div>
           <h2 className="mb-4 text-xl font-semibold">Order Summary</h2>
-          <div className="rounded-lg border p-4 bg-white">
+          <div className="rounded-xl border border-slate-200 dark:border-slate-800 p-6 bg-white dark:bg-slate-900 shadow-sm">
             {cart.map((item) => (
               <div key={item.id} className="mb-3 flex justify-between">
                 <div>
@@ -174,7 +175,7 @@ export default function CheckoutPage() {
               </div>
             ))}
 
-            <Separator className="my-4" />
+            <Separator className="my-6 block bg-slate-200 dark:bg-slate-800 h-[1px]" />
 
             <div className="space-y-2">
               <div className="flex justify-between">
@@ -199,9 +200,9 @@ export default function CheckoutPage() {
 
         <div>
           <h2 className="mb-4 text-xl font-semibold">Payment Method</h2>
-          <div className="rounded-lg border p-4 bg-white">
+          <div className="rounded-xl border border-slate-200 dark:border-slate-800 p-6 bg-white dark:bg-slate-900 shadow-sm">
             <RadioGroup value={paymentMethod} onValueChange={setPaymentMethod}>
-              <div className="flex items-center space-x-2 rounded-md border p-3">
+              <div className="flex items-center space-x-3 rounded-lg border border-slate-200 dark:border-slate-800 p-4 hover:bg-slate-50 dark:hover:bg-slate-800/50 cursor-pointer transition-colors">
                 <RadioGroupItem value="card" id="card" />
                 <Label htmlFor="card" className="flex items-center">
                   <CreditCard className="mr-2 h-4 w-4" />
@@ -209,45 +210,46 @@ export default function CheckoutPage() {
                 </Label>
               </div>
 
-              <div className="mt-3 flex items-center space-x-2 rounded-md border p-3">
+              <div className="mt-3 flex items-center space-x-3 rounded-lg border border-slate-200 dark:border-slate-800 p-4 hover:bg-slate-50 dark:hover:bg-slate-800/50 cursor-pointer transition-colors">
                 <RadioGroupItem value="cash" id="cash" />
-                <Label htmlFor="cash" className="flex items-center">
-                  <Wallet className="mr-2 h-4 w-4" />
+                <Label htmlFor="cash" className="flex items-center text-base cursor-pointer">
+                  <Wallet className="mr-2 h-5 w-5" />
                   Cash
                 </Label>
               </div>
 
-              <div className="mt-3 flex items-center space-x-2 rounded-md border p-3">
+              <div className="mt-3 flex items-center space-x-3 rounded-lg border border-slate-200 dark:border-slate-800 p-4 hover:bg-slate-50 dark:hover:bg-slate-800/50 cursor-pointer transition-colors">
                 <RadioGroupItem value="gpay" id="gpay" />
-                <Label htmlFor="gpay" className="flex items-center">
-                  <Smartphone className="mr-2 h-4 w-4 text-blue-500" />
+                <Label htmlFor="gpay" className="flex items-center text-base cursor-pointer">
+                  <Smartphone className="mr-2 h-5 w-5 text-blue-500" />
                   Google Pay
                 </Label>
               </div>
 
-              <div className="mt-3 flex items-center space-x-2 rounded-md border p-3">
+              <div className="mt-3 flex items-center space-x-3 rounded-lg border border-slate-200 dark:border-slate-800 p-4 hover:bg-slate-50 dark:hover:bg-slate-800/50 cursor-pointer transition-colors">
                 <RadioGroupItem value="phonepe" id="phonepe" />
-                <Label htmlFor="phonepe" className="flex items-center">
-                  <Smartphone className="mr-2 h-4 w-4 text-purple-600" />
+                <Label htmlFor="phonepe" className="flex items-center text-base cursor-pointer">
+                  <Smartphone className="mr-2 h-5 w-5 text-purple-600" />
                   PhonePe
                 </Label>
               </div>
 
-              <div className="mt-3 flex items-center space-x-2 rounded-md border p-3">
+              <div className="mt-3 flex items-center space-x-3 rounded-lg border border-slate-200 dark:border-slate-800 p-4 hover:bg-slate-50 dark:hover:bg-slate-800/50 cursor-pointer transition-colors">
                 <RadioGroupItem value="paytm" id="paytm" />
-                <Label htmlFor="paytm" className="flex items-center">
-                  <QrCode className="mr-2 h-4 w-4 text-sky-500" />
+                <Label htmlFor="paytm" className="flex items-center text-base cursor-pointer">
+                  <QrCode className="mr-2 h-5 w-5 text-sky-500" />
                   Paytm
                 </Label>
               </div>
             </RadioGroup>
 
-            <Button className="mt-6 w-full" size="lg" onClick={handlePayment}>
+            <Button className="mt-6 w-full font-bold text-md tracking-wide" size="lg" onClick={handlePayment}>
               Complete Payment
             </Button>
           </div>
         </div>
       </div>
     </div>
+  </div>
   )
 }
