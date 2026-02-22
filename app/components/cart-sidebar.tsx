@@ -21,9 +21,9 @@ export default function CartSidebar() {
   }
 
   return (
-    <div className="flex w-80 flex-col border-l bg-background">
-      <div className="flex items-center justify-between border-b p-4">
-        <h2 className="flex items-center text-lg font-semibold">
+    <div className="flex w-80 flex-col border-l border-slate-200/60 dark:border-slate-800/60 bg-white/70 dark:bg-slate-950/70 backdrop-blur-xl shadow-lg z-20">
+      <div className="flex items-center justify-between border-b border-slate-200/60 dark:border-slate-800/60 p-5">
+        <h2 className="flex items-center text-lg font-bold bg-clip-text text-transparent bg-linear-to-r from-indigo-600 to-cyan-600 dark:from-indigo-400 dark:to-cyan-400">
           <ShoppingCart className="mr-2 h-5 w-5" />
           Cart
         </h2>
@@ -33,7 +33,7 @@ export default function CartSidebar() {
       </div>
 
       {/* Customer Section */}
-      <div className="border-b p-4">
+      <div className="border-b border-slate-200/60 dark:border-slate-800/60 p-5">
         <Button
           variant="outline"
           className="w-full justify-start bg-transparent"
@@ -45,7 +45,7 @@ export default function CartSidebar() {
       </div>
 
       {/* Discount Section */}
-      <div className="border-b p-4">
+      <div className="border-b border-slate-200/60 dark:border-slate-800/60 p-4">
         <Button
           variant="outline"
           className="w-full justify-start bg-transparent"
@@ -112,8 +112,8 @@ export default function CartSidebar() {
         )}
       </div>
 
-      <div className="border-t p-4">
-        <div className="mb-4 space-y-2">
+      <div className="border-t border-slate-200/60 dark:border-slate-800/60 p-5 bg-white/40 dark:bg-slate-950/40 backdrop-blur-md">
+        <div className="mb-5 space-y-3">
           <div className="flex justify-between">
             <p>Subtotal</p>
             <p>₹{cartTotal.toFixed(2)}</p>
@@ -129,7 +129,7 @@ export default function CartSidebar() {
             <p>₹{(cartTotal - discountAmount).toFixed(2)}</p>
           </div>
         </div>
-        <Button className="w-full" size="lg" disabled={cart.length === 0} onClick={handleCheckout}>
+        <Button className="w-full bg-indigo-600 hover:bg-indigo-700 text-white shadow-md shadow-indigo-500/25 transition-all outline-none rounded-xl py-6 font-semibold text-lg" disabled={cart.length === 0} onClick={handleCheckout}>
           Checkout
         </Button>
       </div>

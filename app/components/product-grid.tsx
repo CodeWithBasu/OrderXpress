@@ -37,19 +37,19 @@ export default function ProductGrid({ category, searchQuery }: ProductGridProps)
       {filteredProducts.map((product) => (
         <Card
           key={product.id}
-          className="overflow-hidden transition-all duration-200 hover:scale-105 hover:shadow-md cursor-pointer group"
+          className="overflow-hidden transition-all duration-300 hover:scale-[1.03] hover:shadow-xl hover:shadow-indigo-500/10 cursor-pointer group bg-white/70 dark:bg-slate-900/70 backdrop-blur-sm border-slate-200/50 dark:border-slate-800/50 rounded-2xl"
           onClick={() => addToCart(product)}
         >
-          <div className="relative aspect-square">
+          <div className="relative aspect-square m-2 overflow-hidden rounded-xl">
             <div className="absolute inset-0 flex items-center justify-center bg-black/50 opacity-0 transition-opacity group-hover:opacity-100 z-10">
               <PlusCircle className="h-10 w-10 text-white" />
             </div>
-            <Image src={product.image || "/placeholder.svg"} alt={product.name} fill className="object-cover" />
+            <Image src={product.image || "/placeholder.svg"} alt={product.name} fill className="object-cover transition-transform duration-500 group-hover:scale-110" />
           </div>
-          <CardContent className="p-3">
+          <CardContent className="p-4 pt-2">
             <div>
-              <h3 className="font-medium line-clamp-1">{product.name}</h3>
-              <p className="text-sm text-muted-foreground">₹{product.price.toFixed(2)}</p>
+              <h3 className="font-semibold text-slate-800 dark:text-slate-200 line-clamp-1 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">{product.name}</h3>
+              <p className="text-sm font-medium text-slate-500 dark:text-slate-400 mt-1">₹{product.price.toFixed(2)}</p>
             </div>
           </CardContent>
         </Card>
