@@ -21,6 +21,7 @@ import {
 import { Button } from "@/components/ui/button"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
 import { cn } from "@/lib/utils"
+import { AnimatedThemeToggler } from "@/components/ui/animated-theme-toggler"
 
 const navigation = [
   { name: "Dashboard", href: "/admin", icon: LayoutDashboard },
@@ -40,8 +41,8 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   const pathname = usePathname()
 
   const Sidebar = ({ mobile = false }: { mobile?: boolean }) => (
-    <div className={cn("flex h-full flex-col", mobile ? "w-full" : "w-64")}>
-      <div className="flex h-16 items-center justify-between px-6 border-b">
+    <div className={cn("flex h-full flex-col bg-white dark:bg-slate-950 text-slate-900 dark:text-slate-100", mobile ? "w-full" : "w-64")}>
+      <div className="flex h-16 items-center justify-between px-6 border-b border-slate-200 dark:border-slate-800">
         <div className="flex items-center gap-2">
           <Store className="h-8 w-8 text-primary" />
           <span className="text-xl font-bold">POS Admin</span>
@@ -60,7 +61,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             <Button
               key={item.name}
               variant={isActive ? "secondary" : "ghost"}
-              className={cn("w-full justify-start gap-3 h-11", isActive && "bg-primary/10 text-primary font-medium")}
+              className={cn("w-full justify-start gap-3 h-11 hover:bg-slate-100 dark:hover:bg-slate-800/50", isActive && "bg-primary/10 text-primary font-medium dark:bg-primary/20")}
               onClick={() => {
                 router.push(item.href)
                 if (mobile) setSidebarOpen(false)
@@ -73,10 +74,10 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         })}
       </nav>
 
-      <div className="border-t p-4">
+      <div className="border-t border-slate-200 dark:border-slate-800 p-4">
         <Button
           variant="ghost"
-          className="w-full justify-start gap-3 h-11 text-red-600 hover:text-red-700 hover:bg-red-50"
+          className="w-full justify-start gap-3 h-11 text-red-600 hover:text-red-700 hover:bg-red-50 dark:hover:bg-red-950/30"
           onClick={() => router.push("/")}
         >
           <LogOut className="h-5 w-5" />
@@ -87,37 +88,41 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   )
 
   return (
-    <div className="flex h-screen bg-gray-50">
+    <div className="flex h-screen bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-slate-100">
       {/* Desktop Sidebar */}
       <div className="hidden lg:flex lg:flex-shrink-0">
-        <div className="flex w-64 flex-col border-r bg-white">
+        <div className="flex w-64 flex-col border-r border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950">
           <Sidebar />
         </div>
       </div>
 
       {/* Mobile Sidebar */}
       <Sheet open={sidebarOpen} onOpenChange={setSidebarOpen}>
-        <SheetContent side="left" className="p-0 w-64">
+        <SheetContent side="left" className="p-0 w-64 border-r-0">
           <Sidebar mobile />
         </SheetContent>
       </Sheet>
 
       {/* Main Content */}
       <div className="flex flex-1 flex-col overflow-hidden">
-        {/* Mobile Header */}
-        <div className="flex h-16 items-center justify-between border-b bg-white px-4 lg:hidden">
-          <Sheet open={sidebarOpen} onOpenChange={setSidebarOpen}>
-            <SheetTrigger asChild>
-              <Button variant="ghost" size="icon">
-                <Menu className="h-5 w-5" />
-              </Button>
-            </SheetTrigger>
-          </Sheet>
-          <div className="flex items-center gap-2">
-            <Store className="h-6 w-6 text-primary" />
-            <span className="font-bold">POS Admin</span>
+        {/* Header */}
+        <div className="flex h-16 items-center justify-between border-b border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 px-4 lg:px-8">
+          <div className="flex items-center">
+            <Sheet open={sidebarOpen} onOpenChange={setSidebarOpen}>
+              <SheetTrigger asChild>
+                <Button variant="ghost" size="icon" className="lg:hidden mr-2">
+                  <Menu className="h-5 w-5" />
+                </Button>
+              </SheetTrigger>
+            </Sheet>
+            <div className="flex items-center gap-2 lg:hidden">
+              <Store className="h-6 w-6 text-primary" />
+              <span className="font-bold">POS Admin</span>
+            </div>
           </div>
-          <div className="w-10" /> {/* Spacer for centering */}
+          <div className="flex items-center gap-4">
+             <AnimatedThemeToggler />
+          </div>
         </div>
 
         {/* Page Content */}

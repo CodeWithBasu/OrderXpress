@@ -175,7 +175,7 @@ export default function CheckoutPage() {
               </div>
             ))}
 
-            <Separator className="my-6 block bg-slate-200 dark:bg-slate-800 h-[1px]" />
+            <Separator className="my-6 block bg-slate-200 dark:bg-slate-800 h-px" />
 
             <div className="space-y-2">
               <div className="flex justify-between">
