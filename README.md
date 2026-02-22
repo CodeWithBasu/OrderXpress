@@ -1,18 +1,37 @@
-# 🍔 OrderXpress POS
+<div align="center">
+  <img src="public/preview.png" alt="OrderXpress POS Preview" width="100%" style="border-radius: 10px;" />
+  <br />
+  <br />
+  
+  <h1>🍔 OrderXpress POS</h1>
+  <p><b>A Modern, Lightning-Fast Full Stack Point of Sale & Inventory Management System</b></p>
 
-**OrderXpress** is a modern, high-performance Point of Sale (POS) and inventory management system built specifically for fast-paced restaurants, cafes, and retail stores. It features a beautiful, dynamic user interface with lightning-fast checkout flows.
+  <p>
+    <img alt="Version" src="https://img.shields.io/badge/version-1.0.0-blue.svg?cacheSeconds=2592000" />
+    <img alt="Next.js" src="https://img.shields.io/badge/Next.js-15-black?logo=next.js" />
+    <img alt="React" src="https://img.shields.io/badge/React-19-blue?logo=react" />
+    <img alt="MongoDB" src="https://img.shields.io/badge/MongoDB-Atlas-green?logo=mongodb" />
+    <img alt="Stripe" src="https://img.shields.io/badge/Stripe-Payments-indigo?logo=stripe" />
+    <img alt="License: MIT" src="https://img.shields.io/badge/License-MIT-yellow.svg" />
+  </p>
+</div>
 
-![OrderXpress POS Preview](public/preview.png) _(Preview placeholder)_
+---
+
+**OrderXpress** is a premium, high-performance **Full Stack** Point of Sale (POS) and inventory management system designed specifically for fast-paced restaurants, cafes, and retail stores. It merges a beautiful, dynamic user interface with robust backend operations to deliver lightning-fast checkout flows.
+
+---
 
 ## ✨ Key Features
 
 - **⚡ Lightning Fast POS Interface:** Optimized Next.js 15 routing for instant category switching and cart management.
-- **💳 Multi-Gateway Payment Support:** Fully integrated with Stripe Checkout for secure credit/debit card processing, alongside native wallet tracking (Google Pay, PhonePe, Paytm) and Cash.
+- **🌐 Full Stack Architecture:** Complete end-to-end solution featuring a React/Next.js frontend and integrated Next.js API route backend.
+- **💳 Multi-Gateway Payment Support:** Fully integrated with Stripe Checkout for secure credit/debit card processing, alongside native wallet tracking (Google Pay, PhonePe, Paytm) and Cash tracking.
 - **📦 Real-Time Inventory & DB:** Powered by MongoDB Atlas. Products and transaction histories are instantly synced to the cloud.
 - **🎨 Stunning UI/UX:** Built with Tailwind CSS v4 and Framer Motion for smooth, dynamic animations, hover effects, and a premium "glassmorphism" aesthetic.
 - **📊 Admin Dashboard:** Comprehensive backend management portal to track recent orders, manage customer profiles, and update product inventory on the fly.
 - **🌙 Dark Mode Support:** Seamless toggling between light and dark themes using `next-themes` and Shadcn UI components.
-- **🧾 Automated Digital Receipts:** Auto-generates printable order receipts upon successful payment routing.
+- **🧾 Automated Digital Receipts:** Auto-generates beautifully crafted printable order receipts upon successful payment routing.
 
 ## 🛠️ Tech Stack
 
@@ -22,6 +41,40 @@
 - **Database:** MongoDB & Mongoose
 - **Payments:** Stripe API (`stripe-node`)
 - **Icons:** Lucide React
+
+---
+
+## 🏗️ System Architecture & Workflow
+
+Here's a flowchart visualizing how the OrderXpress full-stack ecosystem interacts from browsing to checkout:
+
+```mermaid
+sequenceDiagram
+    autonumber
+    participant U as 👤 User/Admin
+    participant UI as 🖥️ Next.js Frontend
+    participant API as ⚙️ Next.js API Routes
+    participant M as 🗄️ MongoDB Atlas
+    participant S as 💳 Stripe API
+
+    U->>UI: Browse Menu / Manage Items
+    UI->>API: Fetch Products/Inventory Data
+    API->>M: Query Database
+    M-->>API: Return Data
+    API-->>UI: Serve Items to Display
+
+    U->>UI: Add Items to Cart & Checkout
+    UI->>S: Process Secure Payment
+    S-->>UI: Payment Success webhook/response
+
+    UI->>API: Send Order Confirmation
+    API->>M: Save Order & Deduct Inventory
+    M-->>API: Database Updated
+    API-->>UI: Transaction Complete
+    UI-->>U: Generate Digital Receipt
+```
+
+---
 
 ### 📦 Dependency Graph
 
@@ -85,4 +138,6 @@ This application connects to an external MongoDB Atlas cluster. If you encounter
 
 ---
 
-Built with ❤️ by [CodeWithBasu](https://github.com/CodeWithBasu).
+<div align="center">
+  <p>Built with ❤️ by <a href="https://github.com/CodeWithBasu">CodeWithBasu</a></p>
+</div>
