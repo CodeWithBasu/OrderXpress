@@ -10,6 +10,7 @@ import { db } from "../services/database"
 import type { InventoryItem } from "../services/database"
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area"
 import { DietaryIcon, getDietaryType } from "@/components/ui/dietary-icon"
+import { FeedbackModal } from "../components/feedback-modal"
 
 export default function DigitalMenuPage() {
   const [products, setProducts] = useState<InventoryItem[]>([])
@@ -36,7 +37,10 @@ export default function DigitalMenuPage() {
     <div className="min-h-screen bg-slate-50 dark:bg-slate-950 font-sans flex flex-col pb-8">
       {/* Header */}
       <div className="sticky top-0 z-20 bg-white/80 dark:bg-slate-950/80 backdrop-blur-xl border-b border-slate-200/60 dark:border-slate-800/60 pt-6 pb-4 px-4 shadow-sm">
-        <div className="text-center mb-6">
+        <div className="text-center mb-6 relative">
+          <div className="absolute right-0 top-0">
+            <FeedbackModal source="Digital Menu" />
+          </div>
           <h1 className="text-3xl font-extrabold bg-clip-text text-transparent bg-linear-to-r from-orange-500 to-amber-500">
             OrderXpress Menu
           </h1>

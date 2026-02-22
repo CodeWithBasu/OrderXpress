@@ -16,6 +16,7 @@ import {
   X,
   LogOut,
   Store,
+  MessageSquare,
 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
@@ -27,6 +28,7 @@ const navigation = [
   { name: "Categories", href: "/admin/categories", icon: Package },
   { name: "Orders", href: "/admin/orders", icon: ShoppingCart },
   { name: "Customers", href: "/admin/customers", icon: Users },
+  { name: "Feedback", href: "/admin/feedback", icon: MessageSquare },
   { name: "Organizations", href: "/admin/organizations", icon: Building2 },
   { name: "Analytics", href: "/admin/analytics", icon: BarChart3 },
   { name: "Settings", href: "/admin/settings", icon: Settings },
