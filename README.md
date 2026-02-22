@@ -27,7 +27,7 @@
 
 Here is a visual breakdown of the `package.json` structure, illustrating our scripts, runtime dependencies, and devDependencies:
 
-![Package.json Dependency Tree](/public/package-json-graph.png)
+![Package.json Dependency Tree](/public/OrderXpress.json.png)
 
 ## 🚀 Getting Started
 
