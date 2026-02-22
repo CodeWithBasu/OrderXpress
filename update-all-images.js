@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 
-const MONGODB_URI = "mongodb+srv://basudevmuna111_db:Itskd8HAjJi4nrU1@orderxpresscluster.wtt1en5.mongodb.net/OrderXpressDB?appName=OrderXpressCluster";
+require('dotenv').config({ path: '.env.local' });
+const MONGODB_URI = process.env.MONGODB_URI;
 
 const productSchema = new mongoose.Schema({ name: String, image: String }, { strict: false });
 const Product = mongoose.models.Product || mongoose.model('Product', productSchema);

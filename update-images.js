@@ -1,7 +1,8 @@
 // seed.js
 const mongoose = require('mongoose');
 
-const MONGODB_URI = "mongodb+srv://basudevmuna111_db:Itskd8HAjJi4nrU1@orderxpresscluster.wtt1en5.mongodb.net/OrderXpressDB?appName=OrderXpressCluster";
+require('dotenv').config({ path: '.env.local' });
+const MONGODB_URI = process.env.MONGODB_URI;
 
 // Basic Schema definition avoiding typescript for pure node execution
 const productSchema = new mongoose.Schema({
