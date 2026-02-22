@@ -25,18 +25,33 @@ const categories: CategoryItem[] = [
   },
   {
     id: "food",
-    name: "Food",
+    name: "Fast Food",
+    icon: Utensils,
+  },
+  {
+    id: "main courses",
+    name: "Main Courses",
     icon: Utensils,
   },
   {
     id: "drinks",
-    name: "Drinks",
+    name: "Soft Drinks",
     icon: Coffee,
   },
   {
     id: "desserts",
     name: "Desserts",
     icon: IceCream,
+  },
+  {
+    id: "snacks",
+    name: "Appetizers",
+    icon: Utensils,
+  },
+  {
+    id: "beverages",
+    name: "Beverages",
+    icon: Coffee,
   },
 ]
 

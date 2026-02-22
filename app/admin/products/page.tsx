@@ -27,7 +27,7 @@ interface ProductFormData {
   image: string
 }
 
-const categories = ["food", "drinks", "desserts", "snacks", "beverages"]
+const categories = ["beverages", "main courses", "snacks", "desserts", "breads"]
 
 export default function ProductsPage() {
   const [products, setProducts] = useState<InventoryItem[]>([])
@@ -74,7 +74,7 @@ export default function ProductsPage() {
     }
 
     if (selectedCategory !== "all") {
-      filtered = filtered.filter((product) => product.category === selectedCategory)
+      filtered = filtered.filter((product) => product.category.toLowerCase() === selectedCategory.toLowerCase())
     }
 
     setFilteredProducts(filtered)
@@ -83,21 +83,25 @@ export default function ProductsPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
 
-    const productData: InventoryItem = {
-      id: editingProduct?.id || Date.now(),
+    const productData: Partial<InventoryItem> = {
       ...formData,
       lastRestocked: new Date(),
     }
 
-    let updatedProducts
     if (editingProduct) {
-      updatedProducts = products.map((p) => (p.id === editingProduct.id ? productData : p))
+      productData.id = editingProduct.id;
+      const saved = await db.saveProduct(productData);
+      if (saved) {
+        const updated = products.map((p) => (p.id === editingProduct.id ? saved : p));
+        setProducts(updated);
+      }
     } else {
-      updatedProducts = [...products, productData]
+      const saved = await db.saveProduct(productData);
+      if (saved) {
+        setProducts([...products, saved]);
+      }
     }
 
-    await db.saveInventory(updatedProducts)
-    setProducts(updatedProducts)
     resetForm()
   }
 
@@ -119,9 +123,8 @@ export default function ProductsPage() {
 
   const handleDelete = async (productId: number) => {
     if (confirm("Are you sure you want to delete this product?")) {
-      const updatedProducts = products.filter((p) => p.id !== productId)
-      await db.saveInventory(updatedProducts)
-      setProducts(updatedProducts)
+      await db.deleteProduct(productId)
+      setProducts(products.filter((p) => p.id !== productId))
     }
   }
 
@@ -312,7 +315,7 @@ export default function ProductsPage() {
       {/* Products Grid */}
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
         {filteredProducts.map((product) => (
-          <Card key={product.id} className="overflow-hidden">
+          <Card key={product._id || product.id} className="overflow-hidden">
             <div className="aspect-square relative">
               <img
                 src={product.image || "/placeholder.svg"}
@@ -351,7 +354,7 @@ export default function ProductsPage() {
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-1">
                     <DollarSign className="h-3 w-3 text-green-600" />
-                    <span className="font-medium text-green-600">${product.price.toFixed(2)}</span>
+                    <span className="font-medium text-green-600">₹{product.price.toFixed(2)}</span>
                   </div>
                   {product.cost > 0 && (
                     <div className="text-xs text-muted-foreground">

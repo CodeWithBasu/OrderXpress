@@ -10,7 +10,7 @@ import { useCart } from "../context/cart-context"
 
 export default function SuccessPage() {
   const router = useRouter()
-  const { cart, cartTotal, clearCart } = useCart()
+  const { cart, cartTotal, clearCart, isLoaded } = useCart()
 
   const tax = cartTotal * 0.1
   const grandTotal = cartTotal + tax
@@ -18,11 +18,11 @@ export default function SuccessPage() {
   const date = new Date().toLocaleString()
 
   useEffect(() => {
-    // If there's no cart data, redirect to POS
-    if (cart.length === 0) {
+    // If there's no cart data after loading, redirect to POS
+    if (isLoaded && cart.length === 0) {
       router.push("/")
     }
-  }, [cart, router])
+  }, [cart, router, isLoaded])
 
   const handleBackToPOS = () => {
     clearCart()
@@ -33,7 +33,7 @@ export default function SuccessPage() {
     window.print()
   }
 
-  if (cart.length === 0) {
+  if (!isLoaded || cart.length === 0) {
     return null // Will redirect in useEffect
   }
 
@@ -64,7 +64,7 @@ export default function SuccessPage() {
                   {item.name} × {item.quantity}
                 </p>
               </div>
-              <p>${(item.price * item.quantity).toFixed(2)}</p>
+              <p>₹{(item.price * item.quantity).toFixed(2)}</p>
             </div>
           ))}
         </div>
@@ -74,15 +74,15 @@ export default function SuccessPage() {
         <div className="space-y-2">
           <div className="flex justify-between">
             <p>Subtotal</p>
-            <p>${cartTotal.toFixed(2)}</p>
+            <p>₹{cartTotal.toFixed(2)}</p>
           </div>
           <div className="flex justify-between">
             <p>Tax (10%)</p>
-            <p>${tax.toFixed(2)}</p>
+            <p>₹{tax.toFixed(2)}</p>
           </div>
           <div className="flex justify-between font-bold">
             <p>Total</p>
-            <p>${grandTotal.toFixed(2)}</p>
+            <p>₹{grandTotal.toFixed(2)}</p>
           </div>
         </div>
 

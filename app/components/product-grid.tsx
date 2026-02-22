@@ -1,11 +1,13 @@
 "use client"
 
+import { useState, useEffect } from "react"
 import Image from "next/image"
 import { PlusCircle } from "lucide-react"
 
 import { Card, CardContent } from "@/components/ui/card"
 import { useCart } from "../context/cart-context"
-import { products } from "../data/products"
+import { db } from "../services/database"
+import type { InventoryItem } from "../services/database"
 
 interface ProductGridProps {
   category: string
@@ -14,9 +16,18 @@ interface ProductGridProps {
 
 export default function ProductGrid({ category, searchQuery }: ProductGridProps) {
   const { addToCart } = useCart()
+  const [products, setProducts] = useState<InventoryItem[]>([])
+
+  useEffect(() => {
+    async function loadProducts() {
+      const p = await db.getInventory()
+      setProducts(p)
+    }
+    loadProducts()
+  }, [])
 
   const filteredProducts = products.filter((product) => {
-    const matchesCategory = category === "all" || product.category === category
+    const matchesCategory = category === "all" || product.category.toLowerCase() === category.toLowerCase()
     const matchesSearch = product.name.toLowerCase().includes(searchQuery.toLowerCase())
     return matchesCategory && matchesSearch
   })
@@ -38,7 +49,7 @@ export default function ProductGrid({ category, searchQuery }: ProductGridProps)
           <CardContent className="p-3">
             <div>
               <h3 className="font-medium line-clamp-1">{product.name}</h3>
-              <p className="text-sm text-muted-foreground">${product.price.toFixed(2)}</p>
+              <p className="text-sm text-muted-foreground">₹{product.price.toFixed(2)}</p>
             </div>
           </CardContent>
         </Card>

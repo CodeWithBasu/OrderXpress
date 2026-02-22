@@ -41,16 +41,16 @@ const predefinedDiscounts: Discount[] = [
   {
     id: "loyalty",
     type: "fixed",
-    value: 5,
-    description: "Loyalty Member ($5 off)",
-    minAmount: 25,
+    value: 50,
+    description: "Loyalty Member (₹50 off)",
+    minAmount: 250,
   },
   {
     id: "bulk",
     type: "percentage",
     value: 20,
-    description: "Bulk Order (20% off $100+)",
-    minAmount: 100,
+    description: "Bulk Order (20% off ₹1000+)",
+    minAmount: 1000,
   },
 ]
 
@@ -64,7 +64,7 @@ export default function DiscountModal({ isOpen, onClose }: DiscountModalProps) {
 
   const handleApplyPredefined = (discount: Discount) => {
     if (discount.minAmount && cartTotal < discount.minAmount) {
-      alert(`Minimum order amount of $${discount.minAmount} required for this discount`)
+      alert(`Minimum order amount of ₹${discount.minAmount} required for this discount`)
       return
     }
     applyDiscount(discount)
@@ -139,7 +139,7 @@ export default function DiscountModal({ isOpen, onClose }: DiscountModalProps) {
                           <div>
                             <p className="font-medium text-sm">{discount.description}</p>
                             {discount.minAmount && (
-                              <p className="text-xs text-muted-foreground">Min. order: ${discount.minAmount}</p>
+                              <p className="text-xs text-muted-foreground">Min. order: ₹{discount.minAmount}</p>
                             )}
                           </div>
                         </div>
@@ -179,7 +179,7 @@ export default function DiscountModal({ isOpen, onClose }: DiscountModalProps) {
                 <Label>Value</Label>
                 <Input
                   type="number"
-                  placeholder={customDiscount.type === "percentage" ? "Enter %" : "Enter $"}
+                  placeholder={customDiscount.type === "percentage" ? "Enter %" : "Enter ₹"}
                   value={customDiscount.value || ""}
                   onChange={(e) =>
                     setCustomDiscount({

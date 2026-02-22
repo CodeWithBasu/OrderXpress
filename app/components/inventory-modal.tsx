@@ -105,7 +105,7 @@ export default function InventoryModal({ isOpen, onClose }: InventoryModalProps)
                             Category: {item.category} | Supplier: {item.supplier}
                           </p>
                           <p className="text-sm text-muted-foreground">
-                            Cost: ${item.cost} | Price: ${item.price}
+                            Cost: ₹{item.cost} | Price: ₹{item.price}
                           </p>
                         </div>
                       </div>

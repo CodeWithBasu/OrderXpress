@@ -1,6 +1,7 @@
 "use client"
 
 import { createContext, useContext, useState, type ReactNode, useEffect } from "react"
+import type { Customer } from "../services/database"
 
 export interface Product {
   id: number
@@ -18,15 +19,7 @@ interface Discount {
   minAmount?: number
 }
 
-interface Customer {
-  id: string
-  name: string
-  email: string
-  phone: string
-  loyaltyPoints: number
-  totalSpent: number
-  purchaseHistory: Transaction[]
-}
+ 
 
 interface Transaction {
   id: string
@@ -59,6 +52,7 @@ interface CartContextType {
   discountAmount: number
   customer: Customer | null
   setCustomer: (customer: Customer | null) => void
+  isLoaded: boolean
 }
 
 const CartContext = createContext<CartContextType | undefined>(undefined)
@@ -67,6 +61,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
   const [cart, setCart] = useState<CartItem[]>([])
   const [appliedDiscount, setAppliedDiscount] = useState<Discount | null>(null)
   const [customer, setCustomer] = useState<Customer | null>(null)
+  const [isLoaded, setIsLoaded] = useState(false)
 
   // Load cart from localStorage on initial render
   useEffect(() => {
@@ -78,12 +73,15 @@ export function CartProvider({ children }: { children: ReactNode }) {
         console.error("Failed to parse cart from localStorage:", error)
       }
     }
+    setIsLoaded(true)
   }, [])
 
   // Save cart to localStorage whenever it changes
   useEffect(() => {
-    localStorage.setItem("cart", JSON.stringify(cart))
-  }, [cart])
+    if (isLoaded) {
+      localStorage.setItem("cart", JSON.stringify(cart))
+    }
+  }, [cart, isLoaded])
 
   const addToCart = (product: Product) => {
     setCart((prevCart) => {
@@ -151,6 +149,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
         discountAmount,
         customer,
         setCustomer,
+        isLoaded,
       }}
     >
       {children}

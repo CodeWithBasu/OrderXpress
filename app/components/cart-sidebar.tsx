@@ -73,9 +73,9 @@ export default function CartSidebar() {
                 <div className="flex flex-1 flex-col">
                   <div className="flex justify-between">
                     <h3 className="font-medium line-clamp-1">{item.name}</h3>
-                    <p className="font-medium">${(item.price * item.quantity).toFixed(2)}</p>
+                    <p className="font-medium">₹{(item.price * item.quantity).toFixed(2)}</p>
                   </div>
-                  <p className="text-sm text-muted-foreground">${item.price.toFixed(2)} each</p>
+                  <p className="text-sm text-muted-foreground">₹{item.price.toFixed(2)} each</p>
                   <div className="mt-auto flex items-center justify-between">
                     <div className="flex items-center">
                       <Button
@@ -116,17 +116,17 @@ export default function CartSidebar() {
         <div className="mb-4 space-y-2">
           <div className="flex justify-between">
             <p>Subtotal</p>
-            <p>${cartTotal.toFixed(2)}</p>
+            <p>₹{cartTotal.toFixed(2)}</p>
           </div>
           {discountAmount > 0 && (
             <div className="flex justify-between text-green-600">
               <p>Discount</p>
-              <p>-${discountAmount.toFixed(2)}</p>
+              <p>-₹{discountAmount.toFixed(2)}</p>
             </div>
           )}
           <div className="flex justify-between font-medium">
             <p>Total</p>
-            <p>${(cartTotal - discountAmount).toFixed(2)}</p>
+            <p>₹{(cartTotal - discountAmount).toFixed(2)}</p>
           </div>
         </div>
         <Button className="w-full" size="lg" disabled={cart.length === 0} onClick={handleCheckout}>

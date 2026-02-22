@@ -32,6 +32,7 @@ export interface Transaction {
 }
 
 export interface InventoryItem extends Product {
+  _id?: string
   stock: number
   lowStockThreshold: number
   supplier: string
@@ -59,8 +60,15 @@ class DatabaseService {
 
   // Customer Management
   async getCustomers(): Promise<Customer[]> {
-    const customers = localStorage.getItem(this.getStorageKey("customers"))
-    return customers ? JSON.parse(customers) : []
+    try {
+      const res = await fetch("/api/customers")
+      if (!res.ok) throw new Error("Failed to fetch customers")
+      return await res.json()
+    } catch (e) {
+      console.error(e)
+      const customers = localStorage.getItem(this.getStorageKey("customers"))
+      return customers ? JSON.parse(customers) : []
+    }
   }
 
   async getCustomer(id: string): Promise<Customer | null> {
@@ -69,16 +77,40 @@ class DatabaseService {
   }
 
   async saveCustomer(customer: Customer): Promise<void> {
-    const customers = await this.getCustomers()
-    const existingIndex = customers.findIndex((c) => c.id === customer.id)
+    try {
+      const id = customer.id
+      const url = `/api/customers/${id}`
+      const method = "PUT"
+      const res = await fetch(url, {
+        method,
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(customer),
+      })
+      if (!res.ok) {
+         // Fallback if not found during PUT, try POST
+         if (res.status === 404) {
+             await fetch("/api/customers", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(customer),
+             })
+             return;
+         }
+         throw new Error("Failed to save customer")
+      }
+    } catch (e) {
+      console.error(e)
+      const customers = await this.getCustomers()
+      const existingIndex = customers.findIndex((c) => c.id === customer.id)
 
-    if (existingIndex >= 0) {
-      customers[existingIndex] = customer
-    } else {
-      customers.push(customer)
+      if (existingIndex >= 0) {
+        customers[existingIndex] = customer
+      } else {
+        customers.push(customer)
+      }
+
+      localStorage.setItem(this.getStorageKey("customers"), JSON.stringify(customers))
     }
-
-    localStorage.setItem(this.getStorageKey("customers"), JSON.stringify(customers))
   }
 
   async searchCustomers(query: string): Promise<Customer[]> {
@@ -93,49 +125,115 @@ class DatabaseService {
 
   // Transaction Management
   async getTransactions(): Promise<Transaction[]> {
-    const transactions = localStorage.getItem(this.getStorageKey("transactions"))
-    return transactions ? JSON.parse(transactions) : []
+    try {
+      const res = await fetch("/api/transactions")
+      if (!res.ok) throw new Error("Failed to fetch transactions")
+      return await res.json()
+    } catch (e) {
+      console.error(e)
+      const transactions = localStorage.getItem(this.getStorageKey("transactions"))
+      return transactions ? JSON.parse(transactions) : []
+    }
   }
 
   async saveTransaction(transaction: Transaction): Promise<void> {
-    const transactions = await this.getTransactions()
-    transactions.push(transaction)
-    localStorage.setItem(this.getStorageKey("transactions"), JSON.stringify(transactions))
+    try {
+      const res = await fetch("/api/transactions", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(transaction),
+      })
+      if (!res.ok) throw new Error("Failed to save transaction")
+    } catch (e) {
+      console.error(e)
+      const transactions = await this.getTransactions()
+      transactions.push(transaction)
+      localStorage.setItem(this.getStorageKey("transactions"), JSON.stringify(transactions))
+    }
   }
 
   async getTransactionsByCustomer(customerId: string): Promise<Transaction[]> {
-    const transactions = await this.getTransactions()
-    return transactions.filter((t) => t.customerId === customerId)
+    try {
+      const res = await fetch(`/api/transactions?customerId=${customerId}`)
+      if (!res.ok) throw new Error("Failed to fetch customer transactions")
+      return await res.json()
+    } catch (e) {
+      console.error(e)
+      const transactions = await this.getTransactions()
+      return transactions.filter((t) => t.customerId === customerId)
+    }
   }
 
   // Inventory Management
   async getInventory(): Promise<InventoryItem[]> {
-    const inventory = localStorage.getItem(this.getStorageKey("inventory"))
-    if (!inventory) {
-      // Initialize with default inventory
-      const defaultInventory = this.getDefaultInventory()
-      await this.saveInventory(defaultInventory)
-      return defaultInventory
+    try {
+      const res = await fetch('/api/products');
+      if (!res.ok) throw new Error("Failed to fetch products");
+      return await res.json();
+    } catch (e) {
+      console.error(e);
+      // Temporary fallback if DB not configured
+      const inventory = localStorage.getItem(this.getStorageKey("inventory"));
+      if (!inventory) return this.getDefaultInventory();
+      return JSON.parse(inventory);
     }
-    return JSON.parse(inventory)
   }
 
   async saveInventory(inventory: InventoryItem[]): Promise<void> {
-    localStorage.setItem(this.getStorageKey("inventory"), JSON.stringify(inventory))
+    // Legacy method for bulk saves, falling back to local storage
+    localStorage.setItem(this.getStorageKey("inventory"), JSON.stringify(inventory));
+  }
+
+  async saveProduct(product: Partial<InventoryItem>): Promise<InventoryItem | null> {
+    try {
+      const id = product.id;
+      const url = id ? `/api/products/${id}` : "/api/products";
+      const method = id ? "PUT" : "POST";
+      const res = await fetch(url, {
+        method,
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(product),
+      });
+      if (!res.ok) throw new Error("Failed to save product");
+      return await res.json();
+    } catch (e) {
+      console.error(e);
+      return null;
+    }
+  }
+
+  async deleteProduct(productId: number): Promise<boolean> {
+    try {
+      const res = await fetch(`/api/products/${productId}`, { method: "DELETE" });
+      return res.ok;
+    } catch (e) {
+      console.error(e);
+      return false;
+    }
   }
 
   async updateStock(productId: number, quantity: number): Promise<void> {
-    const inventory = await this.getInventory()
-    const item = inventory.find((i) => i.id === productId)
-    if (item) {
-      item.stock = Math.max(0, item.stock - quantity)
-      await this.saveInventory(inventory)
+    try {
+      // Get current from DB
+      const res = await fetch(`/api/products`);
+      if (!res.ok) throw new Error();
+      const products: InventoryItem[] = await res.json();
+      const item = products.find(p => p.id === productId);
+      if (item) {
+        await fetch(`/api/products/${productId}`, {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ stock: Math.max(0, item.stock - quantity) })
+        });
+      }
+    } catch (e) {
+      console.error("Stock update failed", e);
     }
   }
 
   async getLowStockItems(): Promise<InventoryItem[]> {
-    const inventory = await this.getInventory()
-    return inventory.filter((item) => item.stock <= item.lowStockThreshold)
+    const inventory = await this.getInventory();
+    return inventory.filter((item) => item.stock <= item.lowStockThreshold);
   }
 
   // Sales Reports
@@ -181,26 +279,26 @@ class DatabaseService {
       {
         id: 1,
         name: "Cheeseburger",
-        price: 8.99,
+        price: 199,
         image: "/classic-beef-burger.png",
         category: "food",
         stock: 50,
         lowStockThreshold: 10,
         supplier: "Food Supplier Co.",
         lastRestocked: new Date(),
-        cost: 4.5,
+        cost: 100,
       },
       {
         id: 2,
         name: "Pepperoni Pizza",
-        price: 12.99,
+        price: 399,
         image: "/delicious-pizza.png",
         category: "food",
         stock: 30,
         lowStockThreshold: 5,
         supplier: "Pizza Ingredients Ltd.",
         lastRestocked: new Date(),
-        cost: 6.5,
+        cost: 200,
       },
       // Add more default inventory items...
     ]

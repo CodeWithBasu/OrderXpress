@@ -186,7 +186,7 @@ export default function CustomerModal({ isOpen, onClose }: CustomerModalProps) {
                       <Award className="h-3 w-3 mr-1" />
                       {cust.loyaltyPoints} pts
                     </Badge>
-                    <p className="text-sm text-muted-foreground">Spent: ${cust.totalSpent.toFixed(2)}</p>
+                    <p className="text-sm text-muted-foreground">Spent: ₹{cust.totalSpent.toFixed(2)}</p>
                   </div>
                 </div>
               </CardContent>

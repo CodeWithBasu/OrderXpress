@@ -190,7 +190,7 @@ export default function AnalyticsPage() {
     }
   }
 
-  const formatCurrency = (amount: number) => `$${amount.toFixed(2)}`
+  const formatCurrency = (amount: number) => `₹${amount.toFixed(2)}`
   const formatGrowth = (growth: number) => `${growth >= 0 ? "+" : ""}${growth.toFixed(1)}%`
 
   if (loading || !analytics) {

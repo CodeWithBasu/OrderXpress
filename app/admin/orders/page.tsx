@@ -142,7 +142,7 @@ export default function OrdersPage() {
               <DollarSign className="h-4 w-4 text-green-500" />
               <span className="text-sm font-medium">Total Revenue</span>
             </div>
-            <p className="text-2xl font-bold mt-1">${orders.reduce((sum, order) => sum + order.total, 0).toFixed(2)}</p>
+            <p className="text-2xl font-bold mt-1">₹{orders.reduce((sum, order) => sum + order.total, 0).toFixed(2)}</p>
           </CardContent>
         </Card>
         <Card>
@@ -245,9 +245,9 @@ export default function OrdersPage() {
                         <p className="text-sm">{order.items.length}</p>
                       </div>
                       <div className="col-span-2">
-                        <p className="font-medium">${order.total.toFixed(2)}</p>
+                        <p className="font-medium">₹{order.total.toFixed(2)}</p>
                         {order.discount > 0 && (
-                          <p className="text-xs text-green-600">-${order.discount.toFixed(2)} discount</p>
+                          <p className="text-xs text-green-600">-₹{order.discount.toFixed(2)} discount</p>
                         )}
                       </div>
                       <div className="col-span-2">
@@ -346,10 +346,10 @@ export default function OrdersPage() {
                       <div>
                         <p className="font-medium">{item.name}</p>
                         <p className="text-sm text-muted-foreground">
-                          ${item.price.toFixed(2)} × {item.quantity}
+                          ₹{item.price.toFixed(2)} × {item.quantity}
                         </p>
                       </div>
-                      <p className="font-medium">${item.total.toFixed(2)}</p>
+                      <p className="font-medium">₹{item.total.toFixed(2)}</p>
                     </div>
                   ))}
                 </div>
@@ -363,22 +363,22 @@ export default function OrdersPage() {
                 <div className="space-y-2">
                   <div className="flex justify-between">
                     <span>Subtotal</span>
-                    <span>${selectedOrder.subtotal.toFixed(2)}</span>
+                    <span>₹{selectedOrder.subtotal.toFixed(2)}</span>
                   </div>
                   <div className="flex justify-between">
                     <span>Tax</span>
-                    <span>${selectedOrder.tax.toFixed(2)}</span>
+                    <span>₹{selectedOrder.tax.toFixed(2)}</span>
                   </div>
                   {selectedOrder.discount > 0 && (
                     <div className="flex justify-between text-green-600">
                       <span>Discount</span>
-                      <span>-${selectedOrder.discount.toFixed(2)}</span>
+                      <span>-₹{selectedOrder.discount.toFixed(2)}</span>
                     </div>
                   )}
                   <Separator />
                   <div className="flex justify-between font-medium text-lg">
                     <span>Total</span>
-                    <span>${selectedOrder.total.toFixed(2)}</span>
+                    <span>₹{selectedOrder.total.toFixed(2)}</span>
                   </div>
                 </div>
               </div>

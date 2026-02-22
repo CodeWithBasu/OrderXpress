@@ -73,7 +73,7 @@ export default function SalesReportComponent() {
             <DollarSign className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">${report.totalSales.toFixed(2)}</div>
+            <div className="text-2xl font-bold">₹{report.totalSales.toFixed(2)}</div>
           </CardContent>
         </Card>
 
@@ -93,7 +93,7 @@ export default function SalesReportComponent() {
             <TrendingUp className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">${report.averageTransaction.toFixed(2)}</div>
+            <div className="text-2xl font-bold">₹{report.averageTransaction.toFixed(2)}</div>
           </CardContent>
         </Card>
 
@@ -123,7 +123,7 @@ export default function SalesReportComponent() {
                   <span className="font-medium">{product.name}</span>
                 </div>
                 <div className="text-right">
-                  <p className="font-medium">${product.revenue.toFixed(2)}</p>
+                  <p className="font-medium">₹{product.revenue.toFixed(2)}</p>
                   <p className="text-sm text-muted-foreground">{product.quantity} sold</p>
                 </div>
               </div>

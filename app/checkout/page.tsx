@@ -2,7 +2,7 @@
 
 import { useState } from "react"
 import { useRouter } from "next/navigation"
-import { ArrowLeft, CreditCard, Wallet } from "lucide-react"
+import { ArrowLeft, CreditCard, Wallet, Smartphone, QrCode } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
@@ -10,6 +10,7 @@ import { Label } from "@/components/ui/label"
 import { Separator } from "@/components/ui/separator"
 import { useCart } from "../context/cart-context"
 import { db } from "../services/database"
+import { AnimatedThemeToggler } from "@/components/ui/animated-theme-toggler"
 
 export default function CheckoutPage() {
   const router = useRouter()
@@ -20,6 +21,75 @@ export default function CheckoutPage() {
   const grandTotal = cartTotal - discountAmount + tax
 
   const handlePayment = async () => {
+    if (paymentMethod === "card") {
+      try {
+        const response = await fetch('/api/create-checkout-session', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            items: cart,
+            customerEmail: customer?.email,
+            cartTotal,
+            tax,
+            discountAmount,
+            grandTotal,
+          }),
+        })
+        
+        const session = await response.json()
+        if (!response.ok) {
+           throw new Error(session.error || "Payment session failed.")
+        }
+
+        // Save transaction as pending or completed depending on architecture.
+        // For this frontend, we'll save it right now so it's in the DB, and then go to stripe.
+        const transaction = {
+          id: session.id ? session.id : Date.now().toString(),
+          customerId: customer?.id,
+          items: cart.map((item) => ({
+            id: item.id,
+            name: item.name,
+            price: item.price,
+            quantity: item.quantity,
+            total: item.price * item.quantity,
+          })),
+          subtotal: cartTotal,
+          tax: tax,
+          discount: discountAmount,
+          total: grandTotal,
+          paymentMethod: paymentMethod,
+          timestamp: new Date(),
+          receiptNumber: Math.floor(100000 + Math.random() * 900000).toString(),
+        }
+
+        await db.saveTransaction(transaction)
+        
+        // Update customer & stock
+        if (customer) {
+          const updatedCustomer = {
+            ...customer,
+            loyaltyPoints: customer.loyaltyPoints + Math.floor(grandTotal),
+            totalSpent: customer.totalSpent + grandTotal,
+            lastVisit: new Date(),
+            createdAt: customer.createdAt || new Date(),
+          }
+          await db.saveCustomer(updatedCustomer)
+        }
+        for (const item of cart) {
+          await db.updateStock(item.id, item.quantity)
+        }
+
+        // Redirect to Stripe checkout
+        window.location.href = session.url
+        return
+      } catch (err: any) {
+        console.error(err)
+        alert("Failed to initialize Stripe payments. Please check your API keys inside .env.local: " + err.message)
+        return
+      }
+    }
+
+    // Cash workflow
     const transaction = {
       id: Date.now().toString(),
       customerId: customer?.id,
@@ -49,6 +119,7 @@ export default function CheckoutPage() {
         loyaltyPoints: customer.loyaltyPoints + Math.floor(grandTotal),
         totalSpent: customer.totalSpent + grandTotal,
         lastVisit: new Date(),
+        createdAt: customer.createdAt || new Date(),
       }
       await db.saveCustomer(updatedCustomer)
     }
@@ -96,10 +167,10 @@ export default function CheckoutPage() {
                 <div>
                   <p className="font-medium">{item.name}</p>
                   <p className="text-sm text-muted-foreground">
-                    ${item.price.toFixed(2)} × {item.quantity}
+                    ₹{item.price.toFixed(2)} × {item.quantity}
                   </p>
                 </div>
-                <p className="font-medium">${(item.price * item.quantity).toFixed(2)}</p>
+                <p className="font-medium">₹{(item.price * item.quantity).toFixed(2)}</p>
               </div>
             ))}
 
@@ -108,19 +179,19 @@ export default function CheckoutPage() {
             <div className="space-y-2">
               <div className="flex justify-between">
                 <p>Subtotal</p>
-                <p>${cartTotal.toFixed(2)}</p>
+                <p>₹{cartTotal.toFixed(2)}</p>
               </div>
               <div className="flex justify-between">
                 <p>Tax (10%)</p>
-                <p>${tax.toFixed(2)}</p>
+                <p>₹{tax.toFixed(2)}</p>
               </div>
               <div className="flex justify-between">
                 <p>Discount</p>
-                <p>-${discountAmount.toFixed(2)}</p>
+                <p>-₹{discountAmount.toFixed(2)}</p>
               </div>
               <div className="flex justify-between font-bold">
                 <p>Total</p>
-                <p>${grandTotal.toFixed(2)}</p>
+                <p>₹{grandTotal.toFixed(2)}</p>
               </div>
             </div>
           </div>
@@ -143,6 +214,30 @@ export default function CheckoutPage() {
                 <Label htmlFor="cash" className="flex items-center">
                   <Wallet className="mr-2 h-4 w-4" />
                   Cash
+                </Label>
+              </div>
+
+              <div className="mt-3 flex items-center space-x-2 rounded-md border p-3">
+                <RadioGroupItem value="gpay" id="gpay" />
+                <Label htmlFor="gpay" className="flex items-center">
+                  <Smartphone className="mr-2 h-4 w-4 text-blue-500" />
+                  Google Pay
+                </Label>
+              </div>
+
+              <div className="mt-3 flex items-center space-x-2 rounded-md border p-3">
+                <RadioGroupItem value="phonepe" id="phonepe" />
+                <Label htmlFor="phonepe" className="flex items-center">
+                  <Smartphone className="mr-2 h-4 w-4 text-purple-600" />
+                  PhonePe
+                </Label>
+              </div>
+
+              <div className="mt-3 flex items-center space-x-2 rounded-md border p-3">
+                <RadioGroupItem value="paytm" id="paytm" />
+                <Label htmlFor="paytm" className="flex items-center">
+                  <QrCode className="mr-2 h-4 w-4 text-sky-500" />
+                  Paytm
                 </Label>
               </div>
             </RadioGroup>

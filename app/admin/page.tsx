@@ -12,6 +12,7 @@ import {
   Eye,
   BarChart3,
 } from "lucide-react"
+import Link from "next/link"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
@@ -166,7 +167,7 @@ export default function AdminDashboard() {
             <DollarSign className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">${stats.totalSales.toFixed(2)}</div>
+            <div className="text-2xl font-bold">₹{stats.totalSales.toFixed(2)}</div>
             <div className="flex items-center text-xs text-muted-foreground">
               {stats.salesGrowth >= 0 ? (
                 <TrendingUp className="h-3 w-3 text-green-500 mr-1" />
@@ -243,7 +244,7 @@ export default function AdminDashboard() {
                     <div>
                       <p className="font-medium text-sm">{product.name}</p>
                       <div className="flex items-center gap-2">
-                        <span className="text-xs text-muted-foreground">${product.sales.toFixed(2)}</span>
+                        <span className="text-xs text-muted-foreground">₹{product.sales.toFixed(2)}</span>
                         {product.growth >= 0 ? (
                           <Badge variant="secondary" className="text-xs bg-green-100 text-green-700">
                             +{product.growth.toFixed(1)}%
@@ -267,10 +268,12 @@ export default function AdminDashboard() {
         <Card>
           <CardHeader className="flex flex-row items-center justify-between">
             <CardTitle>Recent Orders</CardTitle>
-            <Button variant="outline" size="sm">
-              <Eye className="h-4 w-4 mr-2" />
-              View All
-            </Button>
+            <Link href="/admin/orders">
+              <Button variant="outline" size="sm">
+                <Eye className="h-4 w-4 mr-2" />
+                View All
+              </Button>
+            </Link>
           </CardHeader>
           <CardContent>
             <div className="space-y-4">
@@ -281,7 +284,7 @@ export default function AdminDashboard() {
                     <p className="text-xs text-muted-foreground">{order.customer}</p>
                   </div>
                   <div className="text-right">
-                    <p className="font-medium text-sm">${order.total.toFixed(2)}</p>
+                    <p className="font-medium text-sm">₹{order.total.toFixed(2)}</p>
                     <Badge variant="secondary" className="text-xs">
                       {order.status}
                     </Badge>
@@ -300,22 +303,30 @@ export default function AdminDashboard() {
         </CardHeader>
         <CardContent>
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-            <Button className="h-20 flex-col gap-2">
-              <Package className="h-6 w-6" />
-              Add Product
-            </Button>
-            <Button variant="outline" className="h-20 flex-col gap-2 bg-transparent">
-              <ShoppingCart className="h-6 w-6" />
-              View Orders
-            </Button>
-            <Button variant="outline" className="h-20 flex-col gap-2 bg-transparent">
-              <Users className="h-6 w-6" />
-              Manage Customers
-            </Button>
-            <Button variant="outline" className="h-20 flex-col gap-2 bg-transparent">
-              <BarChart3 className="h-6 w-6" />
-              View Analytics
-            </Button>
+            <Link href="/admin/products?action=new" className="contents">
+              <Button className="h-20 flex-col gap-2 w-full">
+                <Package className="h-6 w-6" />
+                Add Product
+              </Button>
+            </Link>
+            <Link href="/admin/orders" className="contents">
+              <Button variant="outline" className="h-20 flex-col gap-2 bg-transparent w-full">
+                <ShoppingCart className="h-6 w-6" />
+                View Orders
+              </Button>
+            </Link>
+            <Link href="/admin/customers" className="contents">
+              <Button variant="outline" className="h-20 flex-col gap-2 bg-transparent w-full">
+                <Users className="h-6 w-6" />
+                Manage Customers
+              </Button>
+            </Link>
+            <Link href="/admin/analytics" className="contents">
+              <Button variant="outline" className="h-20 flex-col gap-2 bg-transparent w-full">
+                <BarChart3 className="h-6 w-6" />
+                View Analytics
+              </Button>
+            </Link>
           </div>
         </CardContent>
       </Card>
