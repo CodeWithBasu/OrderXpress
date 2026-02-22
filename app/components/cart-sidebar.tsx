@@ -67,7 +67,7 @@ export default function CartSidebar() {
           <div className="space-y-4">
             {cart.map((item) => (
               <div key={item.id} className="flex gap-3">
-                <div className="h-16 w-16 flex-shrink-0 overflow-hidden rounded-md border">
+                <div className="h-16 w-16 shrink-0 overflow-hidden rounded-md border">
                   <img src={item.image || "/placeholder.svg"} alt={item.name} className="h-full w-full object-cover" />
                 </div>
                 <div className="flex flex-1 flex-col">
