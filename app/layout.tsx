@@ -4,6 +4,7 @@ import { Inter } from "next/font/google"
 import "./globals.css"
 import { CartProvider } from "./context/cart-context"
 import { ThemeProvider } from "@/components/theme-provider"
+import { PWAInstall } from "./components/pwa-install"
 
 const inter = Inter({ subsets: ["latin"] })
 
@@ -27,7 +28,9 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <CartProvider>{children}</CartProvider>
+          <CartProvider>
+            <PWAInstall>{children}</PWAInstall>
+          </CartProvider>
         </ThemeProvider>
       </body>
     </html>

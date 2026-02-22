@@ -23,6 +23,12 @@
 - **Payments:** Stripe API (`stripe-node`)
 - **Icons:** Lucide React
 
+### 📦 Dependency Graph
+
+Here is a visual breakdown of the `package.json` structure, illustrating our scripts, runtime dependencies, and devDependencies:
+
+![Package.json Dependency Tree](/public/package-json-graph.png)
+
 ## 🚀 Getting Started
 
 ### Prerequisites
