@@ -112,7 +112,7 @@ export default function LoginPage() {
                 </div>
               </div>
             </CardContent>
-            <CardFooter>
+            <CardFooter className="flex flex-col gap-3">
               <Button 
                 type="submit" 
                 className="w-full h-11 text-base font-semibold transition-all hover:scale-[1.01] active:scale-[0.99] group" 
@@ -129,6 +129,15 @@ export default function LoginPage() {
                     <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
                   </>
                 )}
+              </Button>
+              <Button 
+                type="button"
+                variant="outline"
+                className="w-full h-11 border-slate-200 dark:border-slate-800 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
+                onClick={() => router.push("/")}
+              >
+                <Store className="mr-2 h-4 w-4" />
+                Back to POS
               </Button>
             </CardFooter>
           </form>
