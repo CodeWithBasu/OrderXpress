@@ -128,7 +128,7 @@ _(Note: To test card payments, ensure your Stripe keys are set to "Test Mode". T
 If you are starting fresh, you can optionally populate your database with our beautiful artisanal starter menu (Burgers, Pizzas, Desserts, Mocktails, etc.):
 
 ```bash
-node seed.js
+node scripts/seed.js
 ```
 
 ### 5. Run the Development Server

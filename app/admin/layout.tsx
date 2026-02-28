@@ -2,7 +2,7 @@
 
 import type React from "react"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { useRouter, usePathname } from "next/navigation"
 import {
   LayoutDashboard,
@@ -17,6 +17,7 @@ import {
   LogOut,
   Store,
   MessageSquare,
+  Loader2,
 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
@@ -37,8 +38,57 @@ const navigation = [
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
   const [sidebarOpen, setSidebarOpen] = useState(false)
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null)
   const router = useRouter()
   const pathname = usePathname()
+
+  const isLoginPage = pathname === "/admin/login"
+
+  useEffect(() => {
+    if (!isLoginPage) {
+      checkAuth()
+    } else {
+      setIsAuthenticated(true) // Don't check auth for login page
+    }
+  }, [pathname])
+
+  const checkAuth = async () => {
+    try {
+      const res = await fetch("/api/auth/me")
+      if (res.ok) {
+        setIsAuthenticated(true)
+      } else {
+        setIsAuthenticated(false)
+        router.push("/admin/login")
+      }
+    } catch (err) {
+      setIsAuthenticated(false)
+      router.push("/admin/login")
+    }
+  }
+
+  const handleLogout = async () => {
+    try {
+      await fetch("/api/auth/logout", { method: "POST" })
+      router.push("/admin/login")
+    } catch (err) {
+      console.error("Logout failed", err)
+    }
+  }
+
+  // Handle Loading State
+  if (isAuthenticated === null && !isLoginPage) {
+    return (
+      <div className="flex h-screen items-center justify-center bg-slate-50 dark:bg-slate-950">
+        <Loader2 className="h-10 w-10 animate-spin text-primary" />
+      </div>
+    )
+  }
+
+  // If on login page, just render children without sidebar
+  if (isLoginPage) {
+    return <>{children}</>
+  }
 
   const Sidebar = ({ mobile = false }: { mobile?: boolean }) => (
     <div className={cn("flex h-full flex-col bg-white dark:bg-slate-950 text-slate-900 dark:text-slate-100", mobile ? "w-full" : "w-64")}>
@@ -74,14 +124,22 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         })}
       </nav>
 
-      <div className="border-t border-slate-200 dark:border-slate-800 p-4">
+      <div className="border-t border-slate-200 dark:border-slate-800 p-4 space-y-2">
+        <Button
+          variant="outline"
+          className="w-full justify-start gap-3 h-11 border-slate-200 dark:border-slate-800"
+          onClick={() => router.push("/")}
+        >
+          <Store className="h-5 w-5" />
+          Go to POS
+        </Button>
         <Button
           variant="ghost"
           className="w-full justify-start gap-3 h-11 text-red-600 hover:text-red-700 hover:bg-red-50 dark:hover:bg-red-950/30"
-          onClick={() => router.push("/")}
+          onClick={handleLogout}
         >
           <LogOut className="h-5 w-5" />
-          Back to POS
+          Sign Out
         </Button>
       </div>
     </div>
